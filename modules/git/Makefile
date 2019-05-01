@@ -1,4 +1,5 @@
 GIT:= $(shell which git)
+GITIGNORE_TARGETS ?= python
 
 ## Update submodules
 git/submodules-update:
@@ -23,3 +24,20 @@ git/export:
 	@echo "GIT_IS_BRANCH=$(GIT_IS_BRANCH)"
 	@echo "GIT_IS_TAG=$(GIT_IS_TAG)"
 	@echo "GIT_TIMESTAMP=$(GIT_TIMESTAMP)"
+
+git/ignore:
+	$(call assert-set,GITIGNORE_TARGETS)
+	@if [[ ! -f ".gitignore" ]]; then\
+		printf "Generating .gitignore file using https://www.gitignore.io";\
+		wget "https://www.gitignore.io/api/$(GITIGNORE_TARGETS)" -O .gitignore;\
+		if [[ -f ".gitignore.template" ]]; then\
+			printf "\n.build-harness\n" >> .gitignore;\
+			printf "\n# From .gitignore.template\n" >> .gitignore;\
+			cat .gitignore.template >> .gitignore;\
+		fi;\
+	else\
+		echo "You already have a .gitignore file.";\
+	fi
+
+.gitignore: git/ignore
+	@exit 0
