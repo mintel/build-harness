@@ -13,7 +13,7 @@ init::
 
 .PHONY : clean
 ## Clean build-harness
-clean::
+clean-build-harness::
 	@[ "$(BUILD_HARNESS_PATH)" == '/' ] || \
 	 [ "$(BUILD_HARNESS_PATH)" == '.' ] || \
 	   echo rm -rf $(BUILD_HARNESS_PATH)

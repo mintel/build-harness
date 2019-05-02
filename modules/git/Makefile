@@ -1,4 +1,4 @@
-GIT:= $(shell which git)
+GIT:= $(shell which git 2>/dev/null)
 GITIGNORE_TARGETS ?= python
 
 ## Update submodules
@@ -25,6 +25,7 @@ git/export:
 	@echo "GIT_IS_TAG=$(GIT_IS_TAG)"
 	@echo "GIT_TIMESTAMP=$(GIT_TIMESTAMP)"
 
+## Build .gitignore file if one doesn't exist
 git/ignore:
 	$(call assert-set,GITIGNORE_TARGETS)
 	@if [[ ! -f ".gitignore" ]]; then\
