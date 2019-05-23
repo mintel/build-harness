@@ -1,5 +1,5 @@
 ## Clean all unecessary python project files
-python/clean: python/clean/pyc python/clean/dist
+python/clean: python/clean/pyc python/clean/dist python/clean/docs python/clean/test
 .PHONY: python/clean
 
 python/clean/pyc:
@@ -10,9 +10,7 @@ python/clean/pyc:
 .PHONY: python/clean/pyc
 
 python/clean/dist:
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
+	rm -fr build/ dist/ .eggs/ requirements*.txt
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
 .PHONY: python/clean/dist
@@ -22,10 +20,5 @@ python/clean/docs:
 .PHONY: clean-docs
 
 python/clean/test:
-	rm -f .coverage
-	rm -fr htmlcov/
-	rm -fr coverage.xml
-	rm -fr junit.xml
-	rm -fr junit-*.xml
-	rm -fr reports/
+	rm -fr .coverage htmlcov/ coverage.xml junit.xml junit-*.xml reports/
 .PHONY: clean-test

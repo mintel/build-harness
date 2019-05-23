@@ -1,4 +1,4 @@
-reports/:
+reports:
 	@if [[ ! -d "reports/" ]]; then mkdir reports; fi
 
 pytest/test: pipenv reports/
