@@ -1,11 +1,11 @@
 reports/:
 	@if [[ ! -d "reports/" ]]; then mkdir reports; fi
 
-pytest/test: python/env reports/
+pytest/test: pipenv reports/
 	$(WITH_PIPENV) pytest -m "not postbuild"
 
-pytest/test-lf: python/env reports/
+pytest/test-lf: pipenv reports/
 	$(WITH_PIPENV) pytest -m "not postbuild" --lf
 
-pytest/test-post-build: python/env reports/
+pytest/test-post-build: pipenv reports/
 	$(WITH_PIPENV) pytest -m postbuild
