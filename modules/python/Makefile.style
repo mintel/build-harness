@@ -1,11 +1,14 @@
-BLACK_TARGETS := $(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/.tox/*")
+BLACK := $(shell which black 2>/dev/null)
+LINT_TARGETS := $(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/.tox/*")
 
 ## Check python files using black
 python/lint: $(BLACK)
 	$(call assert-set,BLACK)
-	black --check $(BLACK_TARGETS)
+	black --check $(LINT_TARGETS)
+.PHONY: python/lint
 
 ## Fix python files using black
 python/fmt: $(BLACK)
 	$(call assert-set,BLACK)
-	black $(BLACK_TARGETS)
+	black $(LINT_TARGETS)
+.PHONY: python/fmt
