@@ -20,5 +20,5 @@ python/clean/docs:
 .PHONY: clean-docs
 
 python/clean/test:
-	rm -fr .coverage htmlcov/ coverage.xml junit.xml junit-*.xml reports/
+	rm -fr htmlcov/ coverage.xml .coverage .coverage.* *.cover junit.xml junit-*.xml reports/ .pytest_cache/
 .PHONY: clean-test
