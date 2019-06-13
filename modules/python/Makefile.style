@@ -1,5 +1,5 @@
 BLACK := $(shell which black 2>/dev/null)
-LINT_TARGETS := $(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/.tox/*" -not -path "*/.egg/*")
+LINT_TARGETS := $(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/.tox/*" -not -path "*/.egg*")
 
 ## Check python files using black
 python/lint: $(BLACK)
