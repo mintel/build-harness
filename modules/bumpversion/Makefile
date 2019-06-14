@@ -1,4 +1,4 @@
-BV := $(shell which bumpversion 2>/dev/null)
+BV := $(shell which advbumpversion 2>/dev/null)
 
 ## increment the patch version number (i.e. 1.0.0 -> 1.0.1) and do a release.
 bumpversion/release_patch:
