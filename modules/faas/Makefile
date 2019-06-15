@@ -8,7 +8,7 @@ $(FAAS_BUILD_DIST):
 $(FAAS_BUILD_VENV):
 	PIPENV_IGNORE_VIRTUALENVS=1 pipenv run pip install -r <(pipenv lock -r) --target $(FAAS_BUILD_VENV) --ignore-installed
 
-faas/build/python: pipenv $(FAAS_BUILD_DIST) $(FAAS_BUILD_VENV)
+faas/build/python: $(FAAS_BUILD_DIST) $(FAAS_BUILD_VENV)
 	find -L . -path $(FAAS_BUILD_VENV) -prune -exec touch -d "$(FAAS_MAGIC_DATE)" {} +
 	find -L $(FAAS_BUILD_VENV) -exec touch -d "$(FAAS_MAGIC_DATE)" {} +
 	cd $(FAAS_BUILD_VENV) && zip $(FAAS_BUILD_DIST)/build.zip -rq *
