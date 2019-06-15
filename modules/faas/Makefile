@@ -1,5 +1,5 @@
 FAAS_MAGIC_DATE := 19700101
-FAAS_BUILD_DIST:=$(CURDIR)/dist
+FAAS_BUILD_DIST:=dist
 FAAS_BUILD_VENV:=$(FAAS_BUILD_DIST)/.venv
 
 $(FAAS_BUILD_DIST):
@@ -12,7 +12,7 @@ $(FAAS_BUILD_VENV):
 
 $(FAAS_BUILD_DIST)/build.zip:
 	cd $(FAAS_BUILD_VENV) && zip $(FAAS_BUILD_DIST)/build.zip -rq *
-	cd $(CURDIR)/func && zip $(FAAS_BUILD_DIST)/build.zip -r *py
+	cd func && zip $(FAAS_BUILD_DIST)/build.zip -r *py
 	touch -d "$(FAAS_MAGIC_DATE)" $(FAAS_BUILD_DIST)/build.zip
 
 faas/build/python: $(FAAS_BUILD_DIST) $(FAAS_BUILD_VENV) $(FAAS_BUILD_DIST)/build.zip
