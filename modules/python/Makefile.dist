@@ -1,4 +1,4 @@
-python/dist: pipenv python/clean/dist utils/generate_requirements.py setup.py
+python/dist: pipenv utils/generate_requirements.py setup.py
 	$(WITH_PIPENV) python3 utils/generate_requirements.py
 	$(WITH_PIPENV) python setup.py sdist
 .PHONY: python/dist
