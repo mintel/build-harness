@@ -6,7 +6,7 @@ $(FAAS_BUILD_DIST):
 	mkdir -p $(FAAS_BUILD_DIST)
 
 $(FAAS_BUILD_VENV):
-	pipenv run pip install -r <(pipenv lock -r) --upgrade --target $(FAAS_BUILD_VENV)
+	PIPENV_IGNORE_VIRTUALENVS=1 pipenv run pip install -r <(pipenv lock -r) --target $(FAAS_BUILD_VENV) --ignore-installed
 
 faas/build/python: pipenv $(FAAS_BUILD_DIST) $(FAAS_BUILD_VENV)
 	find -L . -path $(FAAS_BUILD_VENV) -prune -exec touch -d "$(FAAS_MAGIC_DATE)" {} +
