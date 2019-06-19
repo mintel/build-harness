@@ -16,18 +16,18 @@ compose/debug: $(COMPOSE_FILE)
 
 ## Start local dev environment (daemonized)
 compose/up: $(COMPOSE_FILE)
-	@$(DOCKER_COMPOSE) -p "$(SERVICE_NAME)_$(SHELL_UID)" -f $(COMPOSE_FILE) up -d
+	$(DOCKER_COMPOSE) -p "$(SERVICE_NAME)_$(SHELL_UID)" -f $(COMPOSE_FILE) up -d
 
 ## Stop local dev environment
 compose/down: $(COMPOSE_FILE)
-	@$(DOCKER_COMPOSE) -p "$(SERVICE_NAME)_$(SHELL_UID)" -f $(COMPOSE_FILE) down
+	$(DOCKER_COMPOSE) -p "$(SERVICE_NAME)_$(SHELL_UID)" -f $(COMPOSE_FILE) down
 
 ## Restart local dev environment
 compose/restart: compose/down compose/up
 
 ## Purge local dev environment
 compose/purge: $(COMPOSE_FILE)
-	@$(DOCKER_COMPOSE) -p "$(SERVICE_NAME)_$(SHELL_UID)" -f $(COMPOSE_FILE) down -v
+	$(DOCKER_COMPOSE) -p "$(SERVICE_NAME)_$(SHELL_UID)" -f $(COMPOSE_FILE) down -v
 
 ## Rebuild custom containers for local dev environment
 compose/rebuild: compose/down compose/build compose/up
@@ -38,7 +38,7 @@ compose/logs: $(COMPOSE_FILE)
 
 ## Build local dev environment
 compose/build: $(COMPOSE_FILE)
-	@$(DOCKER_COMPOSE) -p "$(SERVICE_NAME)_$(SHELL_UID)" -f $(COMPOSE_FILE) build
+	$(DOCKER_COMPOSE) -p "$(SERVICE_NAME)_$(SHELL_UID)" -f $(COMPOSE_FILE) build
 
 ## Show default compose ps
 compose/ps: $(COMPOSE_FILE)
