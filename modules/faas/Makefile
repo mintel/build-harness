@@ -6,7 +6,7 @@ $(FAAS_BUILD_DIST):
 	mkdir -p $(FAAS_BUILD_DIST)
 
 $(FAAS_BUILD_VENV):
-	$(WITH_PIPENV) pip install -r <(PIPENV_QUIET=1 pipenv --bare lock -r) --target $(FAAS_BUILD_VENV) --ignore-installed
+	$(WITH_PIPENV) pip install -r <(pipenv lock -r 2> /dev/null) --target $(FAAS_BUILD_VENV) --ignore-installed
 	find -L . -path $(FAAS_BUILD_VENV) -prune -exec touch -d "$(FAAS_MAGIC_DATE)" {} +
 	find -L $(FAAS_BUILD_VENV) -exec touch -d "$(FAAS_MAGIC_DATE)" {} +
 
