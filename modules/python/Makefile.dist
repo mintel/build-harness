@@ -1,4 +1,5 @@
-python/dist: pipenv utils/generate_requirements.py setup.py
-	$(WITH_PIPENV) python3 utils/generate_requirements.py
+python/dist: pipenv setup.py
+	$(WITH_PIPENV) python -c 'from pipenv.project import Project; section = "packages"; reqs = {package: (ver["version"] if isinstance(ver, dict) else ver) for package, ver in Project().parsed_pipfile[section].items()}; fd = open("requirements.txt", mode="w"); [fd.write((r if reqs[r] == "*" else "{} {}".format(r, reqs[r])) + "\n") for r in reqs.keys()]; fd.close()'
+	$(WITH_PIPENV) python -c 'from pipenv.project import Project; section = "dev-packages"; reqs = {package: (ver["version"] if isinstance(ver, dict) else ver) for package, ver in Project().parsed_pipfile[section].items()}; fd = open("requirements-dev.txt", mode="w"); [fd.write((r if reqs[r] == "*" else "{} {}".format(r, reqs[r])) + "\n") for r in reqs.keys()]; fd.close()'
 	$(WITH_PIPENV) python setup.py sdist
 .PHONY: python/dist
