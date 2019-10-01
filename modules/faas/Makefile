@@ -36,5 +36,5 @@ faas/build/python: $(FAAS_BUILD_DIST) faas/build/python/venv faas/build/python/z
 ## Clean up faas artifacts.
 faas/clean:
 	rm -rf $(FAAS_BUILD_DIST)/build.zip
-	rm -rf $(FAAS_BUILD_PYTHON_VENV)
+	test -d $(FAAS_BUILD_PYTHON_VENV) && rm -rf $(FAAS_BUILD_PYTHON_VENV) || true
 .PHONY: faas/clean
