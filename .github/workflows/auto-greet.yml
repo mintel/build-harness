@@ -1,0 +1,15 @@
+name: auto-greet
+
+on: [pull_request, issues]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: |-
+          Thank you for reporting the issue! This project is forked from cloudposse/build-harness.
+        pr-message: |-
+          Thank you for submitting this PR! This project is forked from cloudposse/build-harness.
