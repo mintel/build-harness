@@ -25,10 +25,6 @@ include $(BUILD_HARNESS_PATH)/Makefile.*
 include $(BUILD_HARNESS_PATH)/modules/*/bootstrap.Makefile*
 include $(BUILD_HARNESS_PATH)/modules/*/Makefile*
 
-# For backwards compatibility with all of our other projects that use build-harness
-init::
-	exit 0
-
 ifndef TRANSLATE_COLON_NOTATION
 %:
 	@$(SELF) -s $(subst :,/,$@) TRANSLATE_COLON_NOTATION=false
