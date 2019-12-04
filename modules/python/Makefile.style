@@ -1,11 +1,11 @@
 BLACK := $(shell which black 2>/dev/null)
 ISORT := $(shell which isort 2>/dev/null)
-LINT_TARGETS := $(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/.tox/*" -not -path "*/.egg*")
+PYTHON_LINT_TARGETS := $(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*")
 
 ## Check python files using black
 python/lint: $(BLACK)
 	$(call assert-set,BLACK)
-	black --check $(LINT_TARGETS)
+	black --check $(PYTHON_LINT_TARGETS)
 .PHONY: python/lint
 
 ## Fix python files using isort
@@ -16,5 +16,5 @@ python/isort: $(ISORT)
 ## Fix python files using black
 python/fmt: $(BLACK)
 	$(call assert-set,BLACK)
-	black $(LINT_TARGETS)
+	black $(PYTHON_LINT_TARGETS)
 .PHONY: python/fmt
