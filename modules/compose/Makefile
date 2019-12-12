@@ -3,10 +3,8 @@ DOCKER_MONITOR_TABLE ?= 'table {{.ID}}\t{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t
 
 SHELL_UID := $(shell ls -id . | cut -d' ' -f1)_$(shell id -u)
 export COMPOSE_SERVICE_NAME?=svc
-
 export COMPOSE_FILE?=docker/docker-compose.yaml
 export COMPOSE_FLAGS?=
-
 COMPOSE_PROJECT_NAME:=$(COMPOSE_SERVICE_NAME)_$(SHELL_UID)
 COMPOSE_FLAGS:=-p $(COMPOSE_PROJECT_NAME) -f $(COMPOSE_FILE) $(COMPOSE_FLAGS)
 
