@@ -15,9 +15,10 @@ $(COMPOSE_FILE):
 	@exit 1
 
 compose/debug: $(COMPOSE_FILE)
+	@echo "SHELL_UID=$(SHELL_UID)"
 	@echo "COMPOSE_SERVICE_NAME=$(COMPOSE_SERVICE_NAME)"
-	@echo "COMPOSE_FILE=$(COMPOSE_FILE)"
-	@echo "COMPOSE_DEV_FILE=$(COMPOSE_DEV_FILE)"
+	@echo "COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME)"
+	@echo "COMPOSE_FLAGS=$(COMPOSE_FLAGS)"
 	$(DOCKER_COMPOSE) $(COMPOSE_FLAGS) --version
 
 ## Start local dev environment (daemonized)
