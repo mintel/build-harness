@@ -23,5 +23,5 @@ yarn/lint: $(YARN)
 ## Fix frontend files using yarn
 yarn/fmt: $(YARN)
 	$(call assert-set,YARN)
-	cd $(YARN_DIR) && $(YARN) fmt:js
+	cd $(YARN_DIR) && $(YARN) fmt
 .PHONY: yarn/fmt
