@@ -42,3 +42,10 @@ git/ignore:
 
 .gitignore: git/ignore
 	@exit 0
+
+
+git/require_master:
+	if [ $(git rev-parse --abbrev-ref HEAD) != "master" ]; then\
+		echo "You are not on master.";\
+		exit 0;\
+	fi
