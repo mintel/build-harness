@@ -1,5 +1,6 @@
 .PHONY: python/debug
 python/debug:
+	$(call print-var,PY_PIPFILE_EXISTS)
 	$(call print-var,PY_CURRENT_VENV)
 	$(call print-var,PY_VENV)
 	$(call print-var,PIPENV)
