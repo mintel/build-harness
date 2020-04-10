@@ -1,0 +1,2 @@
+.PHONY: yarn/lerna/clean
+yarn/lerna/clean: ; yarn lerna clean -y
