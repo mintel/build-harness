@@ -5,6 +5,7 @@
 EDITOR ?= vim
 
 SHELL = /bin/bash
+SHELL_UID := $(shell ls -id . | cut -d' ' -f1)_$(shell id -u)
 
 DEFAULT_HELP_TARGET ?= help/short
 HELP_FILTER ?= .*
