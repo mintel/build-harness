@@ -26,7 +26,6 @@ endef
 
 # Print a variable
 define print-var
-	@echo "print-var"
 	@echo "$(1)=$($1)"
 endef
 
