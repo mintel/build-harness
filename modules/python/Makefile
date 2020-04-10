@@ -1,10 +1,3 @@
-.PHONY: python/debug
-python/debug:
-	$(call print-var,PY_CURRENT_VENV)
-	$(call print-var,PY_VENV)
-	$(call print-var,PIPENV)
-	$(call print-var,WITH_PIPENV)
-
 ## Clean all unecessary python project files
 python/clean: python/clean/pyc python/clean/dist python/clean/docs python/clean/test
 .PHONY: python/clean

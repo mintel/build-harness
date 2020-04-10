@@ -1,6 +1,7 @@
 DOCKER_COMPOSE = $(shell which docker-compose)
 DOCKER_MONITOR_TABLE ?= 'table {{.ID}}\t{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}\t{{.BlockIO}}'
 
+SHELL_UID := $(shell ls -id . | cut -d' ' -f1)_$(shell id -u)
 export COMPOSE_SERVICE_NAME?=svc
 export COMPOSE_FILE?=docker/docker-compose.yaml
 export COMPOSE_FLAGS?=
@@ -12,10 +13,10 @@ $(COMPOSE_FILE):
 	@exit 1
 
 compose/debug: $(COMPOSE_FILE)
-	$(call print-var,SHELL_UID)
-	$(call print-var,COMPOSE_SERVICE_NAME)
-	$(call print-var,COMPOSE_PROJECT_NAME)
-	$(call print-var,COMPOSE_FLAGS)
+	@echo "SHELL_UID=$(SHELL_UID)"
+	@echo "COMPOSE_SERVICE_NAME=$(COMPOSE_SERVICE_NAME)"
+	@echo "COMPOSE_PROJECT_NAME=$(COMPOSE_PROJECT_NAME)"
+	@echo "COMPOSE_FLAGS=$(COMPOSE_FLAGS)"
 	$(DOCKER_COMPOSE) $(COMPOSE_FLAGS) --version
 .PHONY: compose/debug
 
