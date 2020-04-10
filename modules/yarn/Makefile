@@ -12,16 +12,20 @@ yarn/debug:
 node_modules: $(YARN) package.json yarn.lock ; @$(MAKE) yarn/install yarn/bootstrap
 
 .PHONY: yarn/%
+## Run any `yarn {command}`
 yarn/%: $(YARN) ; $(call assert-set,YARN) && yarn $*
 
 .PHONY: yarn/init
+## Install packages and bootstrap
 yarn/init: node_modules
 
 .PHONY: yarn/install
+## Install packages
 yarn/install: $(YARN) package.json yarn.lock ; set -ex && yarn --pure-lockfile --no-progress
 	$(call assert-set,YARN)
 
 .PHONY: yarn/build/%
+## Build project
 yarn/build/%: yarn/init
 	set -ex && \
 		( \
@@ -31,4 +35,5 @@ yarn/build/%: yarn/init
 		)
 
 .PHONY: yarn/clean
+## Clean node_modules
 yarn/clean: ; rm -rf node_modules
