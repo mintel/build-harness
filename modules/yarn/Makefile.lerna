@@ -1,0 +1,3 @@
+.PHONY: yarn/lerna/clean
+## Clean lerna build artifacts
+yarn/lerna/clean: ; yarn lerna clean -y

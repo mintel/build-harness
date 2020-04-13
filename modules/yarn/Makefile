@@ -1,27 +1,39 @@
 YARN := $(shell which yarn 2>/dev/null)
 
-export YARN_DIR?=frontend
+FRONTEND_DIR?=$(CURDIR)
+FRONTEND_DIR_REL:=$(shell echo "${FRONTEND_DIR}" | sed "s|${CURDIR}||" | sed "s|^/||")
 
-## Build frontend files using yarn
-yarn/build: $(YARN)
+.PHONY: yarn/debug
+yarn/debug:
+	@echo "CURDIR=$(CURDIR)"
+	@echo "FRONTEND_DIR=$(FRONTEND_DIR)"
+	@echo "FRONTEND_DIR_REL=$(FRONTEND_DIR_REL)"
+
+node_modules: $(YARN) package.json yarn.lock ; @$(MAKE) yarn/install yarn/bootstrap
+
+.PHONY: yarn/%
+## Run any `yarn {command}`
+yarn/%: $(YARN) ; $(call assert-set,YARN) && yarn $*
+
+.PHONY: yarn/init
+## Install packages and bootstrap
+yarn/init: node_modules
+
+.PHONY: yarn/install
+## Install packages
+yarn/install: $(YARN) package.json yarn.lock ; set -ex && yarn --pure-lockfile --no-progress
 	$(call assert-set,YARN)
-	set -ex \
-		&& ( \
-			cd $(YARN_DIR) \
-			&& $(YARN) --pure-lockfile --no-progress \
-			&& $(YARN) run build:prod \
-			&& $(YARN) autoclean \
+
+.PHONY: yarn/build/%
+## Build project
+yarn/build/%: yarn/init
+	set -ex && \
+		( \
+			if [ ! -z "$(FRONTEND_DIR_REL)" ]; then cd "$(FRONTEND_DIR_REL)"; fi \
+			&& cd $* \
+			&& yarn run build \
 		)
-.PHONY: yarn/lint
 
-## Check frontend files using yarn
-yarn/lint: $(YARN)
-	$(call assert-set,YARN)
-	cd $(YARN_DIR) && $(YARN) lint
-.PHONY: yarn/lint
-
-## Fix frontend files using yarn
-yarn/fmt: $(YARN)
-	$(call assert-set,YARN)
-	cd $(YARN_DIR) && $(YARN) fmt
-.PHONY: yarn/fmt
+.PHONY: yarn/clean
+## Clean node_modules
+yarn/clean: ; rm -rf node_modules
