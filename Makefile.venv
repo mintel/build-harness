@@ -1,8 +1,8 @@
 BUILD_HARNESS_REQ_TEMPLATE:=$(BUILD_HARNESS_PATH)/requirements.template
 BUILD_HARNESS_REQ_NAME:=.build-harness.requirements.txt
-BUILD_HARNESS_REQ:=$(CURDIR)/$(BUILD_HARNESS_REQ_NAME)
+BUILD_HARNESS_REQ:=$(HOME)/$(BUILD_HARNESS_REQ_NAME)
 BUILD_HARNESS_VENV_NAME:=.build-harness.venv
-BUILD_HARNESS_VENV:=$(CURDIR)/$(BUILD_HARNESS_VENV_NAME)
+BUILD_HARNESS_VENV:=$(HOME)/$(BUILD_HARNESS_VENV_NAME)/$(call python-version)
 WITH_BH_VENV=$(shell test -f $(BUILD_HARNESS_REQ) && echo "source $(BUILD_HARNESS_VENV)/bin/activate &&")
 
 define which
@@ -21,8 +21,7 @@ $(BUILD_HARNESS_REQ): $(BUILD_HARNESS_REQ_TEMPLATE)
 $(BUILD_HARNESS_VENV): $(BUILD_HARNESS_REQ)
 	@if [ -s $(BUILD_HARNESS_REQ) ]; then echo "Installing: $$(cat $(BUILD_HARNESS_REQ) | tr '\n' ' ')"; fi
 	@test -f $(BUILD_HARNESS_REQ) \
-	 	&& ( \
-	 		python -m venv $@ \
-	 		&& touch $(BUILD_HARNESS_VENV)/bin/activate \
-	 		&& $(WITH_BH_VENV) pip install -r $(BUILD_HARNESS_REQ) --ignore-installed \
-	 	); if [ $$? -ne 0 ]; then rm -rf $@; fi
+		&& ( \
+			python -m venv $@ \
+			&& source $@/bin/activate && pip install -r $(BUILD_HARNESS_REQ) --ignore-installed \
+		); if [ $$? -ne 0 ]; then rm -rf $@; fi
