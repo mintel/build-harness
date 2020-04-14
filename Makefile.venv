@@ -1,20 +1,19 @@
 BUILD_HARNESS_REQ_TEMPLATE:=$(BUILD_HARNESS_PATH)/requirements.template
-BUILD_HARNESS_REQ:=$(CURDIR)/.build-harness.requirements.txt
-BUILD_HARNESS_VENV:=$(CURDIR)/.build-harness.venv
-WITH_BH_VENV:=source $(BUILD_HARNESS_VENV)/bin/activate &&
-
-# define which
-# 	$(call WHICH=$$(which $1 2>/dev/null); if [ -z "$(WHICH)" ]; then $(WITH_BH_VENV) echo "$$(which $1 2>/dev/null)"; else echo "$$(WHICH)"; fi)
-# endef
+BUILD_HARNESS_REQ_NAME:=.build-harness.requirements.txt
+BUILD_HARNESS_REQ:=$(CURDIR)/$(BUILD_HARNESS_REQ_NAME)
+BUILD_HARNESS_VENV_NAME:=.build-harness.venv
+BUILD_HARNESS_VENV:=$(CURDIR)/$(BUILD_HARNESS_VENV_NAME)
+WITH_BH_VENV=$(shell test -f $(BUILD_HARNESS_REQ) && echo "source $(BUILD_HARNESS_VENV)/bin/activate &&")
 
 define which
-$(shell which $1 2>/dev/null)
+$(shell $(WITH_BH_VENV) which $1 2>/dev/null)
 endef
 
-# BUMPVERSION=$(shell LIB=advbumpversion; WHICH=$(which $$(LIB) 2>/dev/null); if [ -z "$$(WHICH)" ]; then $(WITH_BH_VENV) echo "$(which $$(LIB) 2>/dev/null)"; else echo "$$(WHICH)"; fi)
-BUMPVERSION:=$(call which,advbumpversion)
-# BLACK=$(shell which black 2>/dev/null)
-# ISORT=$(shell which isort 2>/dev/null)
+.PHONY: bh/venv/debug
+bh/venv/debug:
+	$(call print-var,BUMPVERSION)
+	$(call print-var,BLACK)
+	$(call print-var,ISORT)
 
 $(BUILD_HARNESS_REQ): $(BUILD_HARNESS_REQ_TEMPLATE)
 	@cat $(BUILD_HARNESS_REQ_TEMPLATE) | xargs -I % bash -c 'if [ -z "$$(which % 2>/dev/null)" ]; then echo "%" >> $(BUILD_HARNESS_REQ); fi'
