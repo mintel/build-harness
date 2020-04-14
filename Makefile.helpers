@@ -30,10 +30,6 @@ define print-var
 	@echo "$(1)=$($1)"
 endef
 
-define python-version
-$(shell python -c 'import platform; print(platform.python_version())' 2>/dev/null)
-endef
-
 default:: $(DEFAULT_HELP_TARGET)
 	@exit 0
 
