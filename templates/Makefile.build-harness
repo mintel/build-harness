@@ -6,29 +6,19 @@ export BUILD_HARNESS_PATH ?= $(shell until [ -d "$(BUILD_HARNESS_PROJECT)" ] || 
 -include $(BUILD_HARNESS_PATH)/Makefile
 
 .PHONY : init-build-harness
+## Init build-harness
 init-build-harness::
 	@curl --retry 5 --fail --silent --retry-delay 1 https://raw.githubusercontent.com/$(BUILD_HARNESS_ORG)/$(BUILD_HARNESS_PROJECT)/$(BUILD_HARNESS_BRANCH)/bin/install.sh | \
 		bash -s "$(BUILD_HARNESS_ORG)" "$(BUILD_HARNESS_PROJECT)" "$(BUILD_HARNESS_BRANCH)"
 
 .PHONY : clean-build-harness
+## Clean build-harness
 clean-build-harness::
-	@# @[ "$(BUILD_HARNESS_PATH)" == '/' ] || \
-	@#  [ "$(BUILD_HARNESS_PATH)" == '.' ] || \
-	@#   echo rm -rf $(BUILD_HARNESS_PATH)
-	rm -rf $(BUILD_HARNESS_REQ) $(BUILD_HARNESS_VENV) 2>/dev/null
+	@[ "$(BUILD_HARNESS_PATH)" == '/' ] || \
+	 [ "$(BUILD_HARNESS_PATH)" == '.' ] || \
+	   echo rm -rf $(BUILD_HARNESS_PATH)
 
 .PHONY : debug-build-harness
+## Debug build-harness
 debug-build-harness::
 	@echo $(BUILD_HARNESS_PATH)
-
-.PHONY: bh/init
-## Init build-harness
-bh/init: ; @$(MAKE) init-build-harness
-
-.PHONY: bh/clean
-## Clean build-harness
-bh/clean: ; @$(MAKE) clean-build-harness
-
-.PHONY: bh/debug
-## Debug build-harness
-bh/debug: ; @$(MAKE) debug-build-harness
