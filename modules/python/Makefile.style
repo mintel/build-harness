@@ -2,19 +2,30 @@ BLACK=$(call which,black)
 ISORT=$(call which,isort)
 PYTHON_LINT_TARGETS:=$(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*")
 
+.PHONY: python/lint/targets
+python/lint/targets:
+	@echo $(PYTHON_LINT_TARGETS)
+
+.PHONY: python/lint
 ## Check python files using black
 python/lint: $(BUILD_HARNESS_VENV)
+	$(call assert-set,ISORT)
 	$(call assert-set,BLACK)
-	black --check $(PYTHON_LINT_TARGETS)
-.PHONY: python/lint
+	$(ISORT) --check-only $(PYTHON_LINT_TARGETS)
+	$(BLACK) --check $(PYTHON_LINT_TARGETS)
 
-## Fix python files using isort
+.PHONY: python/isort
+## Fix python import using isort
 python/isort: $(BUILD_HARNESS_VENV)
-	isort --recursive func tests
-.PHONY: isort
+	$(call assert-set,ISORT)
+	$(ISORT) $(PYTHON_LINT_TARGETS)
 
-## Fix python files using black
-python/fmt: $(BUILD_HARNESS_VENV)
+.PHONY: python/black
+## Reformat python files using black
+python/black: $(BUILD_HARNESS_VENV)
 	$(call assert-set,BLACK)
-	black $(PYTHON_LINT_TARGETS)
+	$(BLACK) $(PYTHON_LINT_TARGETS)
+
 .PHONY: python/fmt
+## Format python files
+python/fmt: python/isort python/black
