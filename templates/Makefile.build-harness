@@ -14,11 +14,15 @@ init-build-harness::
 .PHONY : clean-build-harness
 ## Clean build-harness
 clean-build-harness::
-	@[ "$(BUILD_HARNESS_PATH)" == '/' ] || \
-	 [ "$(BUILD_HARNESS_PATH)" == '.' ] || \
-	   echo rm -rf $(BUILD_HARNESS_PATH)
+	@# @[ "$(BUILD_HARNESS_PATH)" == '/' ] || \
+	@#  [ "$(BUILD_HARNESS_PATH)" == '.' ] || \
+	@#   echo rm -rf $(BUILD_HARNESS_PATH)
+	rm -rf $(BUILD_HARNESS_REQ) $(BUILD_HARNESS_VENV) 2>/dev/null
 
 .PHONY : debug-build-harness
 ## Debug build-harness
 debug-build-harness::
 	@echo $(BUILD_HARNESS_PATH)
+
+.PHONY: bh/%
+bh/%: ; @$(MAKE) $*-build-harness
