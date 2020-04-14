@@ -9,11 +9,8 @@ define which
 $(shell $(WITH_BH_VENV) which $1 2>/dev/null)
 endef
 
-VENV_MODULE:=$(shell python -c 'import platform; ver=platform.python_version()[0]; print("virtualenv" if ver == 2 else "venv")' 2>/dev/null)
-
 .PHONY: bh/venv/debug
 bh/venv/debug:
-	$(call print-var,VENV_MODULE)
 	$(call print-var,BUMPVERSION)
 	$(call print-var,BLACK)
 	$(call print-var,ISORT)
@@ -25,6 +22,6 @@ $(BUILD_HARNESS_VENV): $(BUILD_HARNESS_REQ)
 	@if [ -s $(BUILD_HARNESS_REQ) ]; then echo "Installing: $$(cat $(BUILD_HARNESS_REQ) | tr '\n' ' ')"; fi
 	@test -f $(BUILD_HARNESS_REQ) \
 		&& ( \
-			python -m $(VENV_MODULE) $@ \
+			python -m venv $@ \
 			&& source $@/bin/activate && pip install -r $(BUILD_HARNESS_REQ) --ignore-installed \
 		); if [ $$? -ne 0 ]; then rm -rf $@; fi
