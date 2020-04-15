@@ -16,6 +16,9 @@ bh/venv/debug:
 	$(call print-var,BLACK)
 	$(call print-var,ISORT)
 
+.PHONY: bh/venv
+bh/venv: $(BUILD_HARNESS_VENV)
+
 $(BUILD_HARNESS_REQ_TEMPLATE):
 	@echo "[build-harness] MISSING: $@"
 

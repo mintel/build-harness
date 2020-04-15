@@ -8,7 +8,7 @@ python/lint/targets:
 
 .PHONY: python/lint
 ## Check python files using black
-python/lint: $(BUILD_HARNESS_VENV)
+python/lint: bh/venv
 	$(call assert-set,ISORT)
 	$(call assert-set,BLACK)
 	$(ISORT) --check-only $(PYTHON_LINT_TARGETS)
@@ -16,13 +16,13 @@ python/lint: $(BUILD_HARNESS_VENV)
 
 .PHONY: python/isort
 ## Fix python import using isort
-python/isort: $(BUILD_HARNESS_VENV)
+python/isort: bh/venv
 	$(call assert-set,ISORT)
 	$(ISORT) $(PYTHON_LINT_TARGETS)
 
 .PHONY: python/black
 ## Reformat python files using black
-python/black: $(BUILD_HARNESS_VENV)
+python/black: bh/venv
 	$(call assert-set,BLACK)
 	$(BLACK) $(PYTHON_LINT_TARGETS)
 
