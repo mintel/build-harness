@@ -29,6 +29,10 @@ faas/build/python/zip:
 faas/build/python: $(FAAS_BUILD_DIST) faas/build/python/venv faas/build/python/zip
 .PHONY: faas/build/python
 
+## Build python serverless function if it doesn't exist yet
+faas/buildif/python:
+	test -f $(FAAS_BUILD_DIST)/build.zip || $(MAKE) faas/build/python
+.PHONY: faas/buildif/python
 
 # - - - - - - - -
 # CLEANUP
