@@ -30,5 +30,4 @@ bh/init: ; @$(MAKE) init-build-harness
 bh/clean: ; @$(MAKE) clean-build-harness
 
 .PHONY: bh/debug
-## Debug build-harness
 bh/debug: ; @$(MAKE) debug-build-harness
