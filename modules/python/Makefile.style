@@ -1,6 +1,6 @@
 BLACK=$(call which,black)
 ISORT=$(call which,isort)
-PYTHON_LINT_TARGETS:=$(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*")
+PYTHON_LINT_TARGETS:=$(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/$(BUILD_HARNESS_VENV_NAME)/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*")
 
 ## Check python files using black
 python/lint: $(BUILD_HARNESS_VENV)
