@@ -9,7 +9,7 @@ define which
 $(shell $(WITH_BH_VENV) which $1 2>/dev/null)
 endef
 
-VENV_MODULE:=$(shell python -c 'import platform; ver=platform.python_version()[0]; print("virtualenv" if ver == 2 else "venv")' 2>/dev/null)
+VENV_MODULE:=$(shell python -c 'import platform; ver=int(platform.python_version()[0]); print("virtualenv" if ver == 2 else "venv")' 2>/dev/null)
 
 .PHONY: bh/venv/debug
 bh/venv/debug:
