@@ -27,7 +27,7 @@ $(BUILD_HARNESS_REQ): $(BUILD_HARNESS_REQ_TEMPLATE)
 	@cat $(BUILD_HARNESS_REQ_TEMPLATE) | xargs -I % bash -c 'if [ -z "$$(which % 2>/dev/null)" ]; then echo "% not found in PATH" && echo "%" >> $@; fi'
 
 $(BUILD_HARNESS_VENV): $(BUILD_HARNESS_REQ)
-	@if [ -s $(BUILD_HARNESS_REQ) ]; then echo "Installing: $$(cat $(BUILD_HARNESS_REQ) | tr '\n' ' ') (from $(BUILD_HARNESS_REQ))"; fi
+	@if [ -s $(BUILD_HARNESS_REQ) ]; then echo "Installing: $$(cat $(BUILD_HARNESS_REQ) | tr '\n' ' ')"; fi
 	@test -f $(BUILD_HARNESS_REQ) \
 		&& ( \
 			$(shell if [ $$(python -c 'import platform; ver=int(platform.python_version()[0]); print(ver)' 2>/dev/null) -eq 2 ] && [ -n "$$(which python3 2>/dev/null)" ]; then echo "python3"; else echo "python"; fi) -m venv $@ \
