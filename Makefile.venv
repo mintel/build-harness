@@ -3,7 +3,7 @@ BUILD_HARNESS_REQ_NAME:=.build-harness.requirements.txt
 BUILD_HARNESS_REQ:=$(CURDIR)/$(BUILD_HARNESS_REQ_NAME)
 BUILD_HARNESS_VENV_NAME:=.build-harness.venv
 BUILD_HARNESS_VENV:=$(CURDIR)/$(BUILD_HARNESS_VENV_NAME)
-WITH_BH_VENV=$(shell test -f $(BUILD_HARNESS_REQ) && echo "source $(BUILD_HARNESS_VENV)/bin/activate &&")
+WITH_BH_VENV=$(shell test -f $(BUILD_HARNESS_REQ) && echo "source $(BUILD_HARNESS_VENV)/bin/activate 2>/dev/null &&")
 
 define which
 $(shell $(WITH_BH_VENV) which $1 2>/dev/null)
