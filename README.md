@@ -3,7 +3,7 @@
 This `build-harness` is a collection of Makefiles to facilitate building Python projects, Golang projects, Dockerfiles, and more.
 It's designed to work with CI/CD systems such as Travis CI, CircleCI and Jenkins.
 
-**This project is a fork of [cloudposse/build-harness](github.com/cloudposse/build-harness). Like it's parent project, it is licensed under the [APACHE2](LICENSE).**
+**This project is a significant fork of [cloudposse/build-harness](github.com/cloudposse/build-harness). Like it's parent project, it is licensed under the [APACHE2](LICENSE).**
 
 ## Screenshots
 
