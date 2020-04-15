@@ -5,7 +5,6 @@ FAAS_BUILD_PYTHON_VENV:=$(FAAS_BUILD_DIST)/.venv
 $(FAAS_BUILD_DIST):
 	mkdir -p $(FAAS_BUILD_DIST)
 
-
 # - - - - - - - -
 # PYTHON
 # - - - - - - - -
