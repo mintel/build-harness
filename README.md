@@ -34,9 +34,9 @@ bash/lint                           Lint all bash scripts
 bh/clean                            Clean build-harness
 bh/debug                            Debug build-harness
 bh/init                             Init build-harness
-bumpversion/release_major           increment the major version number (i.e. 1.0.0 -> 2.0.0) and do a release.
-bumpversion/release_minor           increment the minor version number (i.e. 1.0.0 -> 1.1.0) and do a release.
-bumpversion/release_patch           increment the patch version number (i.e. 1.0.0 -> 1.0.1) and do a release.
+bumpversion/release_major           Increment the major version number (i.e. 1.0.0 -> 2.0.0) and do a release.
+bumpversion/release_minor           Increment the minor version number (i.e. 1.0.0 -> 1.1.0) and do a release.
+bumpversion/release_patch           Increment the patch version number (i.e. 1.0.0 -> 1.0.1) and do a release.
 compose/build                       Build local dev environment
 compose/down                        Stop local dev environment
 compose/logs                        Tail logs from docker-compose containers
