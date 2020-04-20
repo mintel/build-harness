@@ -1,5 +1,5 @@
 BLACK=$(call which,black)
-ISORT=$(call which,isort)
+ISORT=$(call which,isort) --multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=88
 PYTHON_LINT_TARGETS:=$(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/$(BUILD_HARNESS_VENV_NAME)/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*")
 
 .PHONY: python/lint/targets
