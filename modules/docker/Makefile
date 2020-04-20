@@ -1,8 +1,13 @@
 DOCKER:= $(shell which docker 2>/dev/null)
-DOCKER_RUN ?= docker run -i --rm --network=$(DOCKER_NETWORK)
-DOCKER_EXEC ?= $(DOCKER) exec -it
+DOCKER_RUN?=docker run -i --rm --network=$(DOCKER_NETWORK)
+DOCKER_EXEC?=$(DOCKER) exec -it
+DOCKER_SERVICE_NAME?=
 
-export CONTAINER_SHELL ?= bash
+ifneq ($(COMPOSE_SERVICE_NAME),)
+	DOCKER_SERVICE_NAME=$(COMPOSE_SERVICE_NAME)_[0-9]+_[0-9]+_$(COMPOSE_SERVICE_NAME)_[a-z0-9_]+
+endif
+
+export DOCKER_CONTAINER_SHELL?=bash
 
 # It's like ssh for docker
 define docker-exec
@@ -12,8 +17,10 @@ endef
 
 ## Open a shell in the main container
 docker/exec:
-	@$(DOCKER) ps --no-trunc | grep Up | grep -o -E "$(SERVICE_NAME)_[0-9]+_[0-9]+_$(SERVICE_NAME)_[a-z0-9_]+" | xargs -I % bash -c '</dev/tty docker exec -it % $(CONTAINER_SHELL)'
+	$(call assert-set,DOCKER_SERVICE_NAME)
+	@$(DOCKER) ps --no-trunc | grep Up | grep -o -E "$(DOCKER_SERVICE_NAME)" | xargs -I % bash -c '</dev/tty docker exec -it % $(DOCKER_CONTAINER_SHELL)'
 
 ## Tail logs from docker-compose containers
 docker/logs:
-	@$(DOCKER) ps --no-trunc | grep Up | grep -o -E "$(SERVICE_NAME)_[0-9]+_[0-9]+_$(SERVICE_NAME)_[a-z0-9_]+" | xargs -I % bash -c 'docker logs -f %'
+	$(call assert-set,DOCKER_SERVICE_NAME)
+	@$(DOCKER) ps --no-trunc | grep Up | grep -o -E "$(DOCKER_SERVICE_NAME)" | xargs -I % bash -c 'docker logs -f %'

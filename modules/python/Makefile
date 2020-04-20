@@ -1,3 +1,12 @@
+PYTHON := $(shell which python 2>/dev/null)
+
+.PHONY: python/check
+python/check: ; $(call assert-set,PYTHON) && echo "Found python: $(PYTHON)"
+
+.PHONY: python/debug
+python/debug:
+	$(call print-var,PYTHON)
+
 ## Clean all unecessary python project files
 python/clean: python/clean/pyc python/clean/dist python/clean/docs python/clean/test
 .PHONY: python/clean

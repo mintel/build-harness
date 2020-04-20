@@ -5,6 +5,7 @@
 EDITOR ?= vim
 
 SHELL = /bin/bash
+SHELL_UID := $(shell ls -id . | cut -d' ' -f1)_$(shell id -u)
 
 DEFAULT_HELP_TARGET ?= help/short
 HELP_FILTER ?= .*
@@ -16,12 +17,21 @@ red = $(shell echo -e '\x1b[33;31m$1\x1b[0m')
 
 # Ensures that a variable is defined
 define assert-set
-  @[ -n "$($1)" ] || (echo "$(1) not defined in $(@)"; exit 1)
+	@[ -n "$($1)" ] || (echo "$(1) not defined in $(@)"; exit 1)
 endef
 
 # Ensures that a variable is undefined
 define assert-unset
-  @[ -z "$($1)" ] || (echo "$(1) should not be defined in $(@)"; exit 1)
+	@[ -z "$($1)" ] || (echo "$(1) should not be defined in $(@)"; exit 1)
+endef
+
+# Print a variable
+define print-var
+	@echo "$(1)=$($1)"
+endef
+
+define python-version
+$(shell python -c 'import platform; print(platform.python_version())' 2>/dev/null)
 endef
 
 default:: $(DEFAULT_HELP_TARGET)
@@ -45,14 +55,14 @@ help/short:
 # Generate help output from MAKEFILE_LIST
 help/generate:
 	@awk '/^[a-zA-Z\-\_0-9%:\\\/]+:/ { \
-	  helpMessage = match(lastLine, /^## (.*)/); \
-	  if (helpMessage) { \
-	    helpCommand = $$1; \
-	    helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
-      gsub("\\\\", "", helpCommand); \
-      gsub(":+$$", "", helpCommand); \
-	    printf "  \x1b[32;01m%-35s\x1b[0m %s\n", helpCommand, helpMessage; \
-	  } \
+		helpMessage = match(lastLine, /^## (.*)/); \
+		if (helpMessage) { \
+			helpCommand = $$1; \
+			helpMessage = substr(lastLine, RSTART + 3, RLENGTH); \
+			gsub("\\\\", "", helpCommand); \
+			gsub(":+$$", "", helpCommand); \
+			printf "  \x1b[32;01m%-35s\x1b[0m %s\n", helpCommand, helpMessage; \
+		} \
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST) | sort -u
 	@printf "\n"
