@@ -1,6 +1,3 @@
-reports/:
-	mkdir -p $@
-
 pytest: pytest/test
 .PHONY: pytest
 

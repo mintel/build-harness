@@ -66,3 +66,6 @@ help/generate:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST) | sort -u
 	@printf "\n"
+
+reports/:
+	mkdir -p $@
