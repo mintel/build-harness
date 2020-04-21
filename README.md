@@ -12,13 +12,17 @@ It's designed to work with CI/CD systems such as Travis CI, CircleCI and Jenkins
 
 ## Usage
 
-At the top of your `Makefile` add, the following...
+**STEP 1**: At the top of your `Makefile` add, the following...
 
-```make
+```makefile
 -include $(shell curl -sSL -o .build-harness "https://raw.githubusercontent.com/mintel/build-harness/master/templates/Makefile.build-harness"; echo .build-harness)
 ```
 
-This will download a `Makefile` called `.build-harness` and include it at run-time. We recommend adding `*build-harness*` to your `.gitignore`.
+This will download a `Makefile` called `.build-harness` and include it at run-time.
+
+**STEP 2**: Add `*build-harness*` to your `.gitignore`.
+
+**STEP 3**: Run `make bh/init` to initialize build-harness.
 
 This automatically exposes many new targets that you can leverage throughout your build & CI/CD process.
 
