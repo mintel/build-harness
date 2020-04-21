@@ -26,7 +26,34 @@ Run `make help` for a list of available targets.
 
 **NOTE:** the `/` is interchangeable with the `:` in target names
 
+## Examples
+
+### Generic Python Project
+
+```makefile
+-include $(shell curl -sSL -o .build-harness "https://raw.githubusercontent.com/mintel/build-harness/master/templates/Makefile.build-harness"; echo .build-harness)
+
+# Everything beyond this point is optional, unless your CI/CD relies on specific
+# generic target names.
+
+.PHONY: init lint fmt test clean
+
+# This target allows you to consolidate all "bootstrapping" into a single step
+# rather than waiting for individual targets to do the needful.
+init: bh/init
+  @$(MAKE) bh/venv pipenv
+
+lint: python/lint
+
+fmt: python/fmt
+
+test: pytest/test
+
+clean: pipenv/clean python/clean bh/clean
+```
+
 ## Makefile Targets
+
 ```
 Available targets:
 
