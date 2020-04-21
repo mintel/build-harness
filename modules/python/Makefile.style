@@ -21,7 +21,7 @@ python/lint/targets:
 	@echo "$$(echo $(PYTHON_LINT_TARGETS) | tr ' ' '\n')"
 
 .PHONY: python/lint/announce/%
-python/check/announce/%:
+python/lint/announce/%:
 	@VAR=( $(PYTHON_LINT_TARGETS) ); echo "Checking $${#VAR[@]} files with $*..."
 
 .PHONY: python/lint
@@ -34,7 +34,7 @@ python/lint: bh/venv reports/
 ## Check python imports ordering using autoflake
 python/autoflake/check: bh/venv
 	$(call assert-set,AUTOFLAKE)
-	@$(MAKE) python/check/announce/autoflake
+	@$(MAKE) python/lint/announce/autoflake
 	@$(AUTOFLAKE) $(AUTOFLAKE_FLAGS) $(PYTHON_LINT_TARGETS) >| $(AUTOFLAKE_OUTPUT) && ([ ! -s $(AUTOFLAKE_OUTPUT) ] || cat $(AUTOFLAKE_OUTPUT))
 
 .PHONY: python/autoflake
@@ -47,7 +47,7 @@ python/autoflake: bh/venv
 ## Check python imports using isort
 python/isort/check: bh/venv
 	$(call assert-set,ISORT)
-	@$(MAKE) python/check/announce/isort
+	@$(MAKE) python/lint/announce/isort
 	@$(ISORT) $(ISORT_FLAGS) --check-only $(PYTHON_LINT_TARGETS) --diff
 
 .PHONY: python/isort
@@ -60,7 +60,7 @@ python/isort: bh/venv
 ## Check python files using black
 python/black/check: bh/venv
 	$(call assert-set,BLACK)
-	@$(MAKE) python/check/announce/black
+	@$(MAKE) python/lint/announce/black
 	@$(BLACK) --check $(PYTHON_LINT_TARGETS)
 
 .PHONY: python/black
@@ -73,7 +73,7 @@ python/black: bh/venv
 ## Check python style against pep8 using flake8
 python/flake8: bh/venv
 	$(call assert-set,FLAKE8)
-	@$(MAKE) python/check/announce/flake8
+	@$(MAKE) python/lint/announce/flake8
 	@$(FLAKE8) $(FLAKE8_FLAGS) $(PYTHON_LINT_TARGETS)
 
 .PHONY: python/fmt

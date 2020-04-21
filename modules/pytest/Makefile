@@ -10,5 +10,5 @@ pytest/test-lf: pipenv reports/
 .PHONY: pytest/test-lf
 
 pytest/test-post-build: pipenv reports/
-	$(WITH_PIPENV) pytest -m postbuild
+	$(WITH_PIPENV) pytest -m postbuild --junitxml=reports/junit.postbuild.xml
 .PHONY: pytest/test-post-build
