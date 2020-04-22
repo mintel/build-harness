@@ -4,6 +4,9 @@ PYTHON_DIST_DIR?=dist
 python/dist: pipenv setup.py pipenv/generate_requirements
 	$(WITH_PIPENV) python setup.py sdist --dist-dir $(PYTHON_DIST_DIR)
 
+	$(WITH_PIPENV) pip install -q --disable-pip-version-check wheel
+	$(WITH_PIPENV) python setup.py bdist_wheel --dist-dir $(PYTHON_DIST_DIR)
+
 .PHONY: python/distif
 python/distif:
 	test -f $(PYTHON_DIST_DIR)/*.tar.gz || $(MAKE) python/dist
