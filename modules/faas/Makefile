@@ -9,7 +9,7 @@ $(FAAS_BUILD_DIST):
 # PYTHON
 # - - - - - - - -
 $(FAAS_BUILD_PYTHON_VENV):
-	$(WITH_PIPENV) pip install -r <(PIPENV_QUIET=1 pipenv --bare lock -r) --ignore-installed --target $(FAAS_BUILD_PYTHON_VENV)
+	$(PIPENV_RUN) pip install -r <(PIPENV_QUIET=1 pipenv --bare lock -r) --ignore-installed --target $(FAAS_BUILD_PYTHON_VENV)
 	find -L . -path $(FAAS_BUILD_PYTHON_VENV) -prune -exec touch -d "$(FAAS_MAGIC_DATE)" {} +
 	find -L $(FAAS_BUILD_PYTHON_VENV) -exec touch -d "$(FAAS_MAGIC_DATE)" {} +
 

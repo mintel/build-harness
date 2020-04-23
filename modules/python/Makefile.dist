@@ -7,13 +7,13 @@ python/dist: python/dist/src python/dist/wheel
 .PHONY: python/dist/src
 ## Build Python package source distribution.
 python/dist/src: pipenv setup.py requirements.txt requirements-dev.txt
-	$(WITH_PIPENV) python setup.py sdist --dist-dir $(PYTHON_DIST_DIR)
+	$(PIPENV_RUN) python setup.py sdist --dist-dir $(PYTHON_DIST_DIR)
 
 .PHONY: python/dist/wheel
 ## Build Python package wheel distributions.
 python/dist/wheel: pipenv setup.py requirements.txt requirements-dev.txt
-	$(WITH_PIPENV) pip install -q --disable-pip-version-check wheel
-	$(WITH_PIPENV) python setup.py bdist_wheel --dist-dir $(PYTHON_DIST_DIR)
+	$(PIPENV_RUN) pip install -q --disable-pip-version-check wheel
+	$(PIPENV_RUN) python setup.py bdist_wheel --dist-dir $(PYTHON_DIST_DIR)
 
 .PHONY: python/distif
 ## Build Python package source and wheel distributions if they don't exist.
