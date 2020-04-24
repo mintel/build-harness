@@ -15,7 +15,7 @@ It's designed to work with CI/CD systems such as Travis CI, CircleCI and Jenkins
 * **STEP 1**: At the top of your `Makefile` add, the following...
 
   ```makefile
-  -include $(shell curl -sSL -o .build-harness "https://raw.githubusercontent.com/mintel/build-harness/master/templates/Makefile.build-harness"; echo .build-harness)
+  -include $(shell curl -sSL -o .build-harness "https://git.io/mintel-build-harness"; echo .build-harness)
   ```
 
   This will download a `Makefile` called `.build-harness` and include it at run-time.
@@ -35,7 +35,7 @@ Run `make help` for a list of available targets.
 ### Generic Python Project
 
 ```makefile
--include $(shell curl -sSL -o .build-harness "https://raw.githubusercontent.com/mintel/build-harness/master/templates/Makefile.build-harness"; echo .build-harness)
+-include $(shell curl -sSL -o .build-harness "https://git.io/mintel-build-harness"; echo .build-harness)
 
 # Everything beyond this point is optional, unless your CI/CD relies on specific
 # generic target names.
