@@ -1,9 +1,21 @@
-PYTHON_DIST_DIR=dist
+PYTHON_DIST_DIR?=dist
 
 .PHONY: python/dist
-python/dist: pipenv setup.py pipenv/generate_requirements
-	$(WITH_PIPENV) python setup.py sdist
+## Build Python package source and wheel distributions.
+python/dist: python/dist/src python/dist/wheel
+
+.PHONY: python/dist/src
+## Build Python package source distribution.
+python/dist/src: pipenv setup.py requirements.txt requirements-dev.txt
+	$(PIPENV_RUN) python setup.py sdist --dist-dir $(PYTHON_DIST_DIR)
+
+.PHONY: python/dist/wheel
+## Build Python package wheel distributions.
+python/dist/wheel: pipenv setup.py requirements.txt requirements-dev.txt
+	$(PIPENV_RUN) pip install -q --disable-pip-version-check wheel
+	$(PIPENV_RUN) python setup.py bdist_wheel --dist-dir $(PYTHON_DIST_DIR)
 
 .PHONY: python/distif
+## Build Python package source and wheel distributions if they don't exist.
 python/distif:
-	test -f $(PYTHON_DIST_DIR)/*.tar.gz || $(MAKE) python/dist
+	( ls -1qA $(PYTHON_DIST_DIR) 2>/dev/null | grep -q . ) || $(MAKE) python/dist
