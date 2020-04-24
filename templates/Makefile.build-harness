@@ -2,14 +2,13 @@ export SHELL = /bin/bash
 export BUILD_HARNESS_ORG ?= mintel
 export BUILD_HARNESS_PROJECT ?= build-harness
 export BUILD_HARNESS_BRANCH ?= master
-export BUILD_HARNESS_TAG ?= latest
 export BUILD_HARNESS_PATH ?= $(shell until [ -d "$(BUILD_HARNESS_PROJECT)" ] || [ "`pwd`" == '/' ]; do cd ..; done; pwd)/$(BUILD_HARNESS_PROJECT)
 -include $(BUILD_HARNESS_PATH)/Makefile
 
 .PHONY : init-build-harness
 init-build-harness::
 	@curl --retry 5 --fail --silent --retry-delay 1 https://raw.githubusercontent.com/$(BUILD_HARNESS_ORG)/$(BUILD_HARNESS_PROJECT)/$(BUILD_HARNESS_BRANCH)/bin/install.sh | \
-		bash -s "$(BUILD_HARNESS_ORG)" "$(BUILD_HARNESS_PROJECT)" "$(BUILD_HARNESS_BRANCH)" "$(BUILD_HARNESS_TAG)"
+		bash -s "$(BUILD_HARNESS_ORG)" "$(BUILD_HARNESS_PROJECT)" "$(BUILD_HARNESS_BRANCH)"
 
 .PHONY : clean-build-harness
 clean-build-harness::
