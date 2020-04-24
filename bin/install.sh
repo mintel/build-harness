@@ -10,9 +10,15 @@ export GITHUB_REPO="https://github.com/${BUILD_HARNESS_ORG}/${BUILD_HARNESS_PROJ
 echo "Installing ${BUILD_HARNESS_PROJECT}..."
 
 if [ "$BUILD_HARNESS_PROJECT" ] && [ -d "$BUILD_HARNESS_PROJECT" ]; then
-  (cd $BUILD_HARNESS_PROJECT && git checkout $BUILD_HARNESS_BRANCH && git pull) >/dev/null 2>&1;
+  echo "Updating from ${GITHUB_REPO}#${BUILD_HARNESS_BRANCH}"
+  (
+    cd $BUILD_HARNESS_PROJECT && \
+    git fetch origin --tags --force && \
+    git checkout $BUILD_HARNESS_BRANCH >/dev/null && \
+    git pull \
+  )
 else
-  echo "Cloning ${GITHUB_REPO}#${BUILD_HARNESS_BRANCH}"
+  echo "Cloning from ${GITHUB_REPO}#${BUILD_HARNESS_BRANCH}"
   git clone -b $BUILD_HARNESS_BRANCH $GITHUB_REPO >/dev/null 2>&1
 fi
 
