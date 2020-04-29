@@ -1,3 +1,5 @@
 ./terraform
 .idea
 build-harness.iml
+.build-harness.venv
+.build-harness.requirements.txt
