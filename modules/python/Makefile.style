@@ -13,7 +13,7 @@ FLAKE8_FLAGS:=--select=B,C,E,F,W,T4,B9 --ignore=E203,E266,E501,W503 --output-fil
 # W503: https://github.com/psf/black/pull/36
 # E501: Let black handle line length
 
-PYTHON_LINT_TARGETS=$(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/$(BUILD_HARNESS_VENV_NAME)/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*")
+PYTHON_LINT_TARGETS?=$(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/$(BUILD_HARNESS_VENV_NAME)/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*" -not -path "*/dist/*")
 
 .PHONY: python/lint/targets
 python/lint/targets:
