@@ -11,13 +11,26 @@ define changelog-contains
 if [ -n "$$(awk '/^## \[$1/' $(CHANGELOG_PATH))" ]; then exit 0; else echo "[$1] not found in $(CHANGELOG_PATH)"; exit 1; fi
 endef
 
+define changelog-contains-unreleased
+if [ "$$(awk '/^## \[U/,/^## \[[0-9]/' $(CHANGELOG_PATH) |  awk '!/^## \[/' | grep -c .)" -gt 0 ]; then exit 0; else echo "Unreleased changes not found in $(CHANGELOG_PATH)"; exit 1; fi
+endef
+
 define changelog-exists
 @if [ -f $(CHANGELOG_PATH) ]; then $(call changelog-contains,$(call bv-dry-run,$(1))); else echo "Skipping changelog check because $(CHANGELOG_PATH) does not exist in $(CURDIR)"; fi
 endef
 
 .PHONY: changelog/exists/%
+## Check that a changelog file exists and contains the new version.
 changelog/exists/%:
 	$(call changelog-exists,$*)
+
+.PHONY: changelog/release/%
+## Check the changelog for Unreleased notes and promotes to the new version.
+changelog/release/%:
+	@$(call changelog-contains-unreleased)
+	@if [ -f $(CHANGELOG_PATH) ]; then perl -i -pe"s/## \[Unreleased\]/## \[Unreleased\]\n\n\n## \[$(call bv-dry-run,$*)\] - $$(date +%Y-%m-%d)/g" $(CHANGELOG_PATH); fi
+	@echo "Promoted unreleased to '$(call bv-dry-run,$*)' ($(CHANGELOG_PATH))"
+	git commit $(CHANGELOG_PATH) -m "Add CHANGELOG for $(call bv-dry-run,$*)"
 
 .PHONY: bumpversion/debug
 bumpversion/debug: bh/venv
@@ -28,20 +41,30 @@ bumpversion/debug: bh/venv
 bumpversion/check:
 	$(call assert-set,BUMPVERSION)
 
-.PHONY: bumpversion/release_patch
+.PHONY: bumpversion/patch
 ## Increment the patch version number (i.e. 1.0.0 -> 1.0.1)
-bumpversion/release_patch: git/require_master bh/venv bumpversion/check changelog/exists/patch
+bumpversion/patch: git/require_master bh/venv bumpversion/check changelog/exists/patch
 	$(BUMPVERSION) patch --verbose
 	$(GIT) push --follow-tags
 
-.PHONY: bumpversion/release_minor
+.PHONY: bumpversion/minor
 ## Increment the minor version number (i.e. 1.0.0 -> 1.1.0)
-bumpversion/release_minor: git/require_master bh/venv bumpversion/check changelog/exists/minor
+bumpversion/minor: git/require_master bh/venv bumpversion/check changelog/exists/minor
 	$(BUMPVERSION) minor --verbose
 	$(GIT) push --follow-tags
 
-.PHONY: bumpversion/release_major
+.PHONY: bumpversion/major
 ## Increment the major version number (i.e. 1.0.0 -> 2.0.0)
-bumpversion/release_major: git/require_master bh/venv bumpversion/check changelog/exists/major
+bumpversion/major: git/require_master bh/venv bumpversion/check changelog/exists/major
 	$(BUMPVERSION) major --verbose
 	$(GIT) push --follow-tags
+
+
+.PHONY: bumpversion/release_patch
+bumpversion/release_patch: bumpversion/patch
+
+.PHONY: bumpversion/release_minor
+bumpversion/release_minor: bumpversion/minor
+
+.PHONY: bumpversion/release_major
+bumpversion/release_major: bumpversion/major
