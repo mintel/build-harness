@@ -8,12 +8,12 @@ FLAKE8_OUTPUT:=reports/python.flake8
 
 ISORT_FLAGS:=--multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=88
 AUTOFLAKE_FLAGS:=--remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports
-FLAKE8_FLAGS:=--select=B,C,E,F,W,T4,B9 --ignore=E203,E266,E501,W503 --output-file=$(FLAKE8_OUTPUT) --tee --exit-zero
+FLAKE8_FLAGS:=--select=B,C,E,F,W,T4,B9 --ignore=E203,E231,E266,E501,W503 --output-file=$(FLAKE8_OUTPUT) --tee --exit-zero
 # E203: https://github.com/psf/black/issues/315
 # W503: https://github.com/psf/black/pull/36
 # E501: Let black handle line length
 
-PYTHON_LINT_TARGETS?=$(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/$(BUILD_HARNESS_VENV_NAME)/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*" -not -path "*/dist/*")
+PYTHON_LINT_TARGETS?=$(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/$(BUILD_HARNESS_VENV_NAME)/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*" -not -path "*/dist/*" -not -path "*/build/*")
 
 .PHONY: python/lint/targets
 python/lint/targets:
