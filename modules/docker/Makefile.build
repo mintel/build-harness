@@ -3,7 +3,7 @@
 DOCKER_BUILD_PATH ?= .
 DOCKER_BUILD_FLAGS ?= --no-cache
 DOCKER_IMAGE_NAME ?= tests
-DOCKER_FILE ?= ./Dockerfile
+DOCKER_FILE ?= ./docker/Dockerfile
 
 ## Build docker image
 docker/build: $(DOCKER)

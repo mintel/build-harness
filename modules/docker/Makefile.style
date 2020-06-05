@@ -1,0 +1,9 @@
+.PHONY: docker/lint
+docker/lint: $(DOCKER)
+	@test -f $(DOCKER_FILE) || (echo "'$(DOCKER_FILE)' not found. In your Makefile, please set DOCKERFILE= to the relative path of your Dockerfile." && exit 1)
+	@echo "Linting $(DOCKER_FILE) with hadolint..."
+	@$(DOCKER) run --rm -i hadolint/hadolint < $(DOCKER_FILE)
+
+.PHONY: docker/dive/%
+docker/dive/%: $(DOCKER)
+	$(DOCKER) run --rm -v /var/run/docker.sock:/var/run/docker.sock --env CI=true wagoodman/dive:latest $*
