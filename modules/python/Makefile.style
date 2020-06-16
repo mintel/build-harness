@@ -27,7 +27,7 @@ python/lint/announce/%:
 .PHONY: python/lint
 ## Check python files using black
 python/lint: bh/venv reports/
-	@$(MAKE) python/lint/targets python/isort/check python/black/check python/flake8 # python/autoflake/check
+	@$(MAKE) python/lint/targets python/isort/check python/black/check python/flake8 python/autoflake/check
 	@echo "Done."
 
 .PHONY: python/autoflake/check
@@ -78,4 +78,4 @@ python/flake8: bh/venv
 
 .PHONY: python/fmt
 ## Format python files
-python/fmt: python/isort python/black # python/autoflake
+python/fmt: python/isort python/black python/autoflake

@@ -2,3 +2,5 @@ advbumpversion
 black
 flake8
 isort
+autoflake
+docker-compose
