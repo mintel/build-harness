@@ -14,9 +14,9 @@ It's designed to work with CI/CD systems such as Travis CI, CircleCI and Jenkins
 
 * **STEP 1**: At the top of your `Makefile` add, the following...
 
-  ```makefile
-  -include $(shell curl -sSL -o .build-harness "https://git.io/mintel-build-harness"; echo .build-harness)
-  ```
+```makefile
+-include $(shell [ -e .build-harness ] || curl -sSL -o .build-harness "https://git.io/mintel-build-harness"; echo .build-harness)
+```
 
   This will download a `Makefile` called `.build-harness` and include it at run-time.
 
