@@ -63,13 +63,14 @@ Available targets:
 
 bash/lint                           Lint all bash scripts
 bh/clean                            Clean build-harness
-bh/debug                            Debug build-harness
 bh/init                             Init build-harness
-bumpversion/release_major           Increment the major version number (i.e. 1.0.0 -> 2.0.0) and do a release.
-bumpversion/release_minor           Increment the minor version number (i.e. 1.0.0 -> 1.1.0) and do a release.
-bumpversion/release_patch           Increment the patch version number (i.e. 1.0.0 -> 1.0.1) and do a release.
+bumpversion/major                   Increment the major version number (i.e. 1.0.0 -> 2.0.0)
+bumpversion/minor                   Increment the minor version number (i.e. 1.0.0 -> 1.1.0)
+bumpversion/patch                   Increment the patch version number (i.e. 1.0.0 -> 1.0.1)
+changelog/exists/%                  Check that a changelog file exists and contains the new version.
+changelog/release/%                 Check the changelog for Unreleased notes and promotes to the new version.
 compose/build                       Build local dev environment
-compose/down                        Stop local dev environment
+compose/down                        Stop local dev environment                                                                                                                  [45/3655]
 compose/logs                        Tail logs from docker-compose containers
 compose/monitor                     Show containers resource usage
 compose/monitor/follow              Monitor in time containers resource usage
@@ -124,13 +125,25 @@ packages/reinstall                  Reinstall packages
 packages/reinstall/%                Reinstall package (e.g. helm, helmfile, kubectl)
 packages/uninstall/%                Uninstall package (e.g. helm, helmfile, kubectl)
 pipenv                              Install and activate a virtual environment using pipenv
+pipenv/check                        Test that pipenv is in PATH.
 pipenv/clean                        Remove development virtualenv
+pipenv/debug                        Print build-harness vars about pipenv.
 pipenv/generate_requirements        Generate requirements files based on a Pipfile
 pipenv/lock                         Lock dependencies
+pytest                              Run Python tests with pytest
+python/autoflake                    Fix python imports ordering using autoflake
+python/autoflake/check              Check python imports ordering using autoflake
 python/black                        Reformat python files using black
+python/black/check                  Check python files using black
 python/clean                        Clean all unecessary python project files
+python/dist                         Build Python package source and wheel distributions.
+python/dist/src                     Build Python package source distribution.
+python/dist/wheel                   Build Python package wheel distributions.
+python/distif                       Build Python package source and wheel distributions if they don't exist.
+python/flake8                       Check python style against pep8 using flake8
 python/fmt                          Format python files
-python/isort                        Fix python import using isort
+python/isort                        Fix python imports using isort
+python/isort/check                  Check python imports using isort
 python/lint                         Check python files using black
 readme                              Alias for readme/build
 readme/build                        Create README.md by building it from README.yaml
