@@ -1,0 +1,15 @@
+BANDIT=$(call which, bandit)
+BANDIT_FLAGS=--level --level 
+
+PYTHON_SECURITY_TARGETS?=$(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/$(BUILD_HARNESS_VENV_NAME)/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*" -not -path "*/dist/*" -not -path "*/build/*" -not -path "*/tests/*")
+
+
+.PHONY: python/security/targets
+python/security/targets:
+	@VAR=( $(PYTHON_SECURITY_TARGETS) ); echo "Discovered $${#VAR[@]} files:"
+	@echo "$$(echo $(PYTHON_SECURITY_TARGETS) | tr ' ' '\n')"
+
+.PHONY: python/bandit
+python/bandit: bh/venv reports/ python/security/targets
+	$(call assert-set,BANDIT)
+	@$(BANDIT) $(PYTHON_SECURITY_TARGETS) $(BANDIT_FLAGS)
