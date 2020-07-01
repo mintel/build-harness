@@ -1,4 +1,4 @@
-BANDIT=$(call which, bandit)
+BANDIT=$(call which,bandit)
 BANDIT_FLAGS=-ll -ii
 
 PYTHON_SECURITY_TARGETS?=$(shell find . $(PYTHON_TARGETS_FIND_FLAGS) -not -path "*/tests/*" -not -path "*/docs/*" -not -name "setup.py")
