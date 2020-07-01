@@ -1,15 +1,25 @@
 BANDIT=$(call which, bandit)
 BANDIT_FLAGS=-ll -ii
 
-PYTHON_LINT_TARGETS?=$(shell find . -name "*.py" -not -path "*/.venv/*" -not -path "*/$(BUILD_HARNESS_VENV_NAME)/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*" -not -path "*/dist/*" -not -path "*/build/*" -not -path "*/tests/*")
-
 
 .PHONY: python/security/targets
 python/security/targets:
-	@VAR=( $(PYTHON_LINT_TARGETS) ); echo "Discovered $${#VAR[@]} files:"
-	@echo "$$(echo $(PYTHON_LINT_TARGETS) | tr ' ' '\n')"
+	@VAR=( $(PYTHON_SECURITY_TARGETS) ); echo "Discovered $${#VAR[@]} files:"
+	@echo "$$(echo $(PYTHON_SECURITY_TARGETS) | tr ' ' '\n')"
 
-.PHONY: python/bandit
-python/bandit: bh/venv reports/ python/security/targets
+.PHONY: python/security/announce/%
+python/security/announce/%:
+		@VAR=( $(PYTHON_SECURITY_TARGETS) ); echo "Checking $${#VAR[@]} files with $*..."
+
+
+.PHONY: python/security/bandit
+python/security/bandit: bh/venv
 	$(call assert-set,BANDIT)
-	@$(BANDIT) $(PYTHON_LINT_TARGETS) $(BANDIT_FLAGS)
+	@$(MAKE) python/security/announce/bandit
+	@$(BANDIT) $(PYTHON_SECURITY_TARGETS) $(BANDIT_FLAGS)
+
+.PHONY: python/security
+python/security: python/security/targets python/security/bandit
+
+.PHONY: python/scan
+python/scan: python/security
