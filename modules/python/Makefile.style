@@ -13,6 +13,8 @@ FLAKE8_FLAGS:=--select=B,C,E,F,W,T4,B9 --ignore=E203,E231,E266,E501,W503 --outpu
 # W503: https://github.com/psf/black/pull/36
 # E501: Let black handle line length
 
+PYTHON_LINT_TARGETS?=$(shell find . $(PYTHON_TARGETS_FIND_FLAGS))
+
 .PHONY: python/lint/targets
 python/lint/targets:
 	@VAR=( $(PYTHON_LINT_TARGETS) ); echo "Discovered $${#VAR[@]} files:"
@@ -76,4 +78,5 @@ python/flake8: bh/venv
 
 .PHONY: python/fmt
 ## Format python files
-python/fmt: python/isort python/black python/autoflake
+python/fmt: bh/venv
+	@$(MAKE) python/isort python/black python/autoflake

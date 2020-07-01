@@ -1,25 +1,27 @@
 BANDIT=$(call which, bandit)
 BANDIT_FLAGS=-ll -ii
 
+PYTHON_SECURITY_TARGETS?=$(shell find . $(PYTHON_TARGETS_FIND_FLAGS) -not -path "*/tests/*")
 
-.PHONY: python/security/targets
-python/security/targets:
+
+.PHONY: python/scan/targets
+python/scan/targets:
 	@VAR=( $(PYTHON_SECURITY_TARGETS) ); echo "Discovered $${#VAR[@]} files:"
 	@echo "$$(echo $(PYTHON_SECURITY_TARGETS) | tr ' ' '\n')"
 
-.PHONY: python/security/announce/%
-python/security/announce/%:
-		@VAR=( $(PYTHON_SECURITY_TARGETS) ); echo "Checking $${#VAR[@]} files with $*..."
+.PHONY: python/scan/announce/%
+python/scan/announce/%:
+		@VAR=( $(PYTHON_SECURITY_TARGETS) ); echo "Scanning $${#VAR[@]} files with $*..."
 
-
-.PHONY: python/security/bandit
-python/security/bandit: bh/venv
+.PHONY: python/bandit
+## Scan python files for security vulnerabilities with bandit
+python/bandit: bh/venv
 	$(call assert-set,BANDIT)
-	@$(MAKE) python/security/announce/bandit
+	@$(MAKE) python/scan/announce/bandit
 	@$(BANDIT) $(PYTHON_SECURITY_TARGETS) $(BANDIT_FLAGS)
 
-.PHONY: python/security
-python/security: python/security/targets python/security/bandit
-
 .PHONY: python/scan
-python/scan: python/security
+## Scan python files for security vulnerabilities
+python/scan: bh/venv
+	@$(MAKE) python/scan/targets python/bandit
+	@echo "Done."
