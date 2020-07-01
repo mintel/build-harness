@@ -1,0 +1,25 @@
+BANDIT=$(call which, bandit)
+BANDIT_FLAGS=-ll -ii
+
+
+.PHONY: python/security/targets
+python/security/targets:
+	@VAR=( $(PYTHON_SECURITY_TARGETS) ); echo "Discovered $${#VAR[@]} files:"
+	@echo "$$(echo $(PYTHON_SECURITY_TARGETS) | tr ' ' '\n')"
+
+.PHONY: python/security/announce/%
+python/security/announce/%:
+		@VAR=( $(PYTHON_SECURITY_TARGETS) ); echo "Checking $${#VAR[@]} files with $*..."
+
+
+.PHONY: python/security/bandit
+python/security/bandit: bh/venv
+	$(call assert-set,BANDIT)
+	@$(MAKE) python/security/announce/bandit
+	@$(BANDIT) $(PYTHON_SECURITY_TARGETS) $(BANDIT_FLAGS)
+
+.PHONY: python/security
+python/security: python/security/targets python/security/bandit
+
+.PHONY: python/scan
+python/scan: python/security
