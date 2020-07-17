@@ -8,6 +8,8 @@ BUILD_HARNESS_VENV:=$(CURDIR)/$(BUILD_HARNESS_VENV_NAME)
 WITH_BH_VENV=$(shell test -f $(BUILD_HARNESS_REQ) && echo "source $(BUILD_HARNESS_VENV)/bin/activate 2>/dev/null &&")
 LOCAL_PYTHON_VERSION=$(shell python -c 'import platform; ver=int(platform.python_version()[0]); print(ver)' 2>/dev/null)
 
+BUILD_HARNESS_VENV_SKIP_EXISTING=false
+
 # This doesn't conform to extreme edge-use-cases of modules/python/Makefile.env, but should cover >99% of use.
 LOCAL_PROJECT_PYTHON_VERSION=$(shell if [ -e $(CURDIR)/Pipfile ]; then awk '/python_version*([0-9\.]*)/' Pipfile | awk 'match($$0, /[0-9\.]+/) {print substr($$0, RSTART, RLENGTH)}'; else echo ""; fi)
 LOCAL_PROJECT_PYTHON_VERSION_MAJOR=$(shell echo "$(LOCAL_PROJECT_PYTHON_VERSION)" | cut -c1)
@@ -42,14 +44,19 @@ $(BUILD_HARNESS_REQ): $(BUILD_HARNESS_REQ_TEMPLATE)
 
 $(BUILD_HARNESS_PIPFILE): $(BUILD_HARNESS_REQ)
 	@if [ -f $@ ]; then echo "Removing previously generated build-harness Pipfile" && rm $@; fi
-	@if [ -n "$$(which pipenv 2>/dev/null)" ]; then \
+	if [ -n "$$(which pipenv 2>/dev/null)" ]; then \
 		echo "Generating $@"; \
 		if [ -n "$(LOCAL_PROJECT_PYTHON_VERSION)" ]; then \
 			echo "[requires]" >> $@; \
 			echo "python_version = \"$(LOCAL_PROJECT_PYTHON_VERSION)\"" >> $@; \
 		fi; \
 		echo "[packages]" >> $@; \
-		cat $(BUILD_HARNESS_REQ) | xargs -I % bash -c 'if [ -z "$$(which % 2>/dev/null)" ]; then echo "% = \"*\"" >> $@; fi'; \
+		if [ "$(BUILD_HARNESS_VENV_SKIP_EXISTING)" = true ] ; then \
+			echo "Will skip required packages that exist in your path..."; \
+			cat $(BUILD_HARNESS_REQ) | xargs -I % bash -c 'if [ -z "$$(which % 2>/dev/null)" ]; then echo "% = \"*\"" >> $@; fi'; \
+		else \
+			cat $(BUILD_HARNESS_REQ) | xargs -I % bash -c 'echo "% = \"*\"" >> $@'; \
+		fi; \
 	fi
 
 $(BUILD_HARNESS_VENV): $(BUILD_HARNESS_REQ) $(BUILD_HARNESS_PIPFILE)
