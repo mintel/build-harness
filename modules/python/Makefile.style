@@ -6,7 +6,7 @@ AUTOFLAKE=$(call which,autoflake)
 AUTOFLAKE_OUTPUT:=reports/python.autoflake
 FLAKE8_OUTPUT:=reports/python.flake8
 
-ISORT_FLAGS:=--multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=88
+ISORT_FLAGS:=--profile black
 AUTOFLAKE_FLAGS:=--remove-unused-variables --remove-all-unused-imports --ignore-init-module-imports
 FLAKE8_FLAGS:=--select=B,C,E,F,W,T4,B9 --ignore=E203,E231,E266,E501,W503 --output-file=$(FLAKE8_OUTPUT) --tee --exit-zero
 # E203: https://github.com/psf/black/issues/315
