@@ -44,7 +44,7 @@ $(BUILD_HARNESS_REQ): $(BUILD_HARNESS_REQ_TEMPLATE)
 
 $(BUILD_HARNESS_PIPFILE): $(BUILD_HARNESS_REQ)
 	@if [ -f $@ ]; then echo "Removing previously generated build-harness Pipfile" && rm $@; fi
-	if [ -n "$$(which pipenv 2>/dev/null)" ]; then \
+	@if [ -n "$$(which pipenv 2>/dev/null)" ]; then \
 		echo "Generating $@"; \
 		if [ -n "$(LOCAL_PROJECT_PYTHON_VERSION)" ]; then \
 			echo "[requires]" >> $@; \

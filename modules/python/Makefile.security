@@ -1,5 +1,6 @@
 BANDIT=$(call which,bandit)
 BANDIT_FLAGS=-ll -ii
+SAFETY_FLAGS=check
 
 PYTHON_SECURITY_TARGETS?=$(shell find . $(PYTHON_TARGETS_FIND_FLAGS) -not -path "*/tests/*" -not -path "*/docs/*" -not -name "setup.py")
 
@@ -20,8 +21,16 @@ python/bandit: bh/venv
 	@$(MAKE) python/scan/announce/bandit
 	@$(BANDIT) $(PYTHON_SECURITY_TARGETS) $(BANDIT_FLAGS)
 
+
+.PHONY: python/safety
+## Scan python project for security vulnerabilities with safety
+python/safety: Pipfile.lock
+	@$(MAKE) python/scan/announce/safety
+	@$(DOCKER) run -i --rm stedolan/jq -r <Pipfile.lock '.default | to_entries[] | .key + .value.version' | $(DOCKER) run -i --rm pyupio/safety safety $(SAFETY_FLAGS) --stdin
+
+
 .PHONY: python/scan
 ## Scan python files for security vulnerabilities
 python/scan: bh/venv
-	@$(MAKE) python/scan/targets python/bandit
+	@$(MAKE) python/scan/targets python/bandit python/safety
 	@echo "Done."
