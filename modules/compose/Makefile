@@ -30,7 +30,8 @@ compose/down: $(COMPOSE_FILE)
 .PHONY: compose/down
 
 ## Restart local dev environment
-compose/restart: compose/down compose/up
+compose/restart:
+	$(DOCKER_COMPOSE) $(COMPOSE_FLAGS) restart
 .PHONY: compose/restart
 
 ## Purge local dev environment
