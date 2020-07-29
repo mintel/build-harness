@@ -1,5 +1,3 @@
-BLACK=$(call which,black)
-ISORT=$(call which,isort)
 FLAKE8=$(call which,flake8)
 AUTOFLAKE=$(call which,autoflake)
 
@@ -45,29 +43,29 @@ python/autoflake: bh/venv
 
 .PHONY: python/isort/check
 ## Check python imports using isort
-python/isort/check: bh/venv
-	$(call assert-set,ISORT)
+python/isort/check:
+	@$(DOCKER) pull -q alphachai/isort
 	@$(MAKE) python/lint/announce/isort
-	@$(ISORT) $(ISORT_FLAGS) --check-only $(PYTHON_LINT_TARGETS) --diff
+	@$(DOCKER) run -it --rm --user $(id -u):$(id -g) --mount type=bind,src=$$(pwd),dst=/app alphachai/isort $(ISORT_FLAGS) --check-only $(PYTHON_LINT_TARGETS) --diff
 
 .PHONY: python/isort
 ## Fix python imports using isort
-python/isort: bh/venv
-	$(call assert-set,ISORT)
-	$(ISORT) $(ISORT_FLAGS) $(PYTHON_LINT_TARGETS)
+python/isort:
+	@$(DOCKER) pull -q alphachai/isort
+	$(DOCKER) run -it --rm --user $(id -u):$(id -g) --mount type=bind,src=$$(pwd),dst=/app alphachai/isort $(ISORT_FLAGS) $(PYTHON_LINT_TARGETS)
 
 .PHONY: python/black/check
 ## Check python files using black
-python/black/check: bh/venv
-	$(call assert-set,BLACK)
+python/black/check:
+	@$(DOCKER) pull -q alphachai/black
 	@$(MAKE) python/lint/announce/black
-	@$(BLACK) --check $(PYTHON_LINT_TARGETS)
+	@$(DOCKER) run -it --rm --user $(id -u):$(id -g) --mount type=bind,src=$$(pwd),dst=/app alphachai/black --check $(PYTHON_LINT_TARGETS)
 
 .PHONY: python/black
 ## Reformat python files using black
-python/black: bh/venv
-	$(call assert-set,BLACK)
-	$(BLACK) $(PYTHON_LINT_TARGETS)
+python/black:
+	@$(DOCKER) pull -q alphachai/black
+	$(DOCKER) run -it --rm --user $(id -u):$(id -g) --mount type=bind,src=$$(pwd),dst=/app alphachai/black $(PYTHON_LINT_TARGETS)
 
 .PHONY: python/flake8
 ## Check python style against pep8 using flake8
