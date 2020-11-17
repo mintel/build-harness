@@ -1,6 +1,6 @@
 PYTHON := $(shell which python 2>/dev/null)
 
-PYTHON_TARGETS_FIND_FLAGS=-name "*.py" -not -path "*/.venv/*" -not -path "*/$(BUILD_HARNESS_VENV_NAME)/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*" -not -path "*/dist/*" -not -path "*/build/*"
+PYTHON_TARGETS_FIND_FLAGS=-name "*.py" -not -path "*/.venv/*" -not -path "*/$(BUILD_HARNESS_VENV_NAME)/*" -not -path "*/$(notdir $(BUILD_HARNESS_PATH))/modules/*" -not -path "*/.tox/*" -not -path "*/.egg*" -not -path "*/frontend/*" -not -path "*/dist/*" -not -path "*/build/*"
 
 
 .PHONY: python/check

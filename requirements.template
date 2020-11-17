@@ -3,3 +3,4 @@ flake8
 autoflake
 docker-compose
 bandit
+toml
