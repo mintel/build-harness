@@ -37,7 +37,7 @@ faas/build/python/venv:
 faas/build/python/zip:
 	cd $(FAAS_BUILD_PYTHON_VENV) && zip $(FAAS_BUILD_DIST)/build.zip -rq *
 	cd func && zip $(FAAS_BUILD_DIST)/build.zip -r *py
-	cd $(FAAS_BUILD_DIST) && zip build.zip pyproject.toml
+	cd $(FAAS_BUILD_DIST) && (zip build.zip pyproject.toml || true)
 	touch -d "$(FAAS_MAGIC_DATE)" $(FAAS_BUILD_DIST)/build.zip
 
 .PHONY: faas/build/python
