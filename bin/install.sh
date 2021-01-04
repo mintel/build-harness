@@ -9,7 +9,7 @@ export GITHUB_REPO="https://github.com/${BUILD_HARNESS_ORG}/${BUILD_HARNESS_PROJ
 echo "Installing ${BUILD_HARNESS_PROJECT}..."
 
 if [ -z "$BUILD_HARNESS_BRANCH" ] || [ "$BUILD_HARNESS_BRANCH" == "master" ] ; then
-  BUILD_HARNESS_BRANCH="$(git ls-remote --tags "$GITHUB_REPO" 2>/dev/null | cut -d/ -f3 | sort -rV | head -1 | tr -d '^{}')"
+  BUILD_HARNESS_BRANCH="$(git ls-remote --tags "$GITHUB_REPO" 2>/dev/null | cut -d/ -f3 | grep -v '\^{}$' | sort -rV | head -1)"
 fi
 
 echo "Selected ${GITHUB_REPO}@${BUILD_HARNESS_BRANCH}"
