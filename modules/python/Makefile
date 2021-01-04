@@ -24,7 +24,7 @@ python/clean/pyc:
 python/clean/dist:
 	rm -fr build/ dist/ .eggs/ requirements*.txt
 	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
+	find . -name '*.egg' -exec rm -fr {} +
 .PHONY: python/clean/dist
 
 python/clean/docs:
